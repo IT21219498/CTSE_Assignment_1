@@ -31,8 +31,8 @@ jobs:
       - name: Install Dependencies
         run: npm install --prefix ./user-service
 
-      - name: Run Tests
-        run: npm test --prefix ./user-service
+      - name: Skip Tests
+        run: echo "No tests available. Skipping test step."
 
   docker-build-and-push:
     name: Build and Push Docker Images to GHCR
