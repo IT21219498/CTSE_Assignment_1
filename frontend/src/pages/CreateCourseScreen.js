@@ -3,8 +3,8 @@ import UploadWidget from "../components/UploadWidget";
 import Loading from "../components/Loading";
 import ToastContext from "../context/ToastContext";
 import AuthContext from "../context/AuthContext";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
 
 const CreateCourseScreen = () => {
   const [companies, setCompanies] = useState([]);
@@ -134,12 +134,12 @@ const CreateCourseScreen = () => {
             Description
           </label>
 
-          <ReactQuill
+          {/* <ReactQuill
             value={courseData.description}
             onChange={(value) =>
               setCourseData({ ...courseData, description: value })
             }
-          />
+          /> */}
         </div>
 
         <div className='mb-3'>

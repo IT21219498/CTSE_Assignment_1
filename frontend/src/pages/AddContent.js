@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import UploadWidget from "../components/UploadWidget";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import ToastContext from "../context/ToastContext";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
 
 const AddContent = () => {
   const { toast } = useContext(ToastContext);
@@ -140,18 +140,18 @@ const AddContent = () => {
   };
 
   return (
-    <div className="container w-50 shadow p-4 my-3 h-50">
-      <h1 className="mb-4 d-flex justify-content-center">Add Content</h1>
-      {error && <div className="alert alert-danger">{error}</div>}
+    <div className='container w-50 shadow p-4 my-3 h-50'>
+      <h1 className='mb-4 d-flex justify-content-center'>Add Content</h1>
+      {error && <div className='alert alert-danger'>{error}</div>}
       <div>
-        <div className="mb-3">
-          <label htmlFor="course" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='course' className='form-label'>
             Course
           </label>
           <select
-            name="course"
-            id="course"
-            className="form-select"
+            name='course'
+            id='course'
+            className='form-select'
             value={content.courseId}
             onChange={(e) => {
               setContent({ ...content, courseId: e.target.value });
@@ -164,51 +164,51 @@ const AddContent = () => {
             ))}
           </select>
         </div>
-        <div className="mb-3">
-          <label htmlFor="order" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='order' className='form-label'>
             Order
           </label>
           <input
-            type="number"
-            className="form-control"
-            id="order"
-            placeholder="Enter order here..."
+            type='number'
+            className='form-control'
+            id='order'
+            placeholder='Enter order here...'
             value={content.order}
             onChange={(e) => setContent({ ...content, order: e.target.value })}
           />
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="type" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='type' className='form-label'>
             Type of Content
           </label>
           <select
-            name="type"
-            id="type"
-            className="form-select"
+            name='type'
+            id='type'
+            className='form-select'
             value={content.type}
             onChange={(e) => setContent({ ...content, type: e.target.value })}
           >
-            <option value="video">Video</option>
-            <option value="quiz">Quiz</option>
-            <option value="note">Note</option>
+            <option value='video'>Video</option>
+            <option value='quiz'>Quiz</option>
+            <option value='note'>Note</option>
           </select>
         </div>
         {content.type === "note" && (
-          <div className="mb-3">
-            <label htmlFor="note" className="form-label">
+          <div className='mb-3'>
+            <label htmlFor='note' className='form-label'>
               Note
             </label>
-            <ReactQuill
+            {/* <ReactQuill
               id="note"
               value={content.note}
               onChange={(value) => setContent({ ...content, note: value })}
-            />
+            /> */}
           </div>
         )}
         {content.type === "video" && (
-          <div className="mb-3">
-            <label htmlFor="video" className="form-label">
+          <div className='mb-3'>
+            <label htmlFor='video' className='form-label'>
               Upload the video
             </label>
             <UploadWidget
@@ -217,42 +217,42 @@ const AddContent = () => {
           </div>
         )}
         {content.type === "quiz" && (
-          <div className="mb-3">
-            <label htmlFor="title" className="form-label">
+          <div className='mb-3'>
+            <label htmlFor='title' className='form-label'>
               Quiz Title
             </label>
             <input
-              type="text"
-              className="form-control"
-              id="title"
-              placeholder="Enter quiz title here..."
+              type='text'
+              className='form-control'
+              id='title'
+              placeholder='Enter quiz title here...'
               value={quiz.title}
               onChange={(e) => setQuiz({ ...quiz, title: e.target.value })}
             />
-            <label htmlFor="questions" className="form-label">
+            <label htmlFor='questions' className='form-label'>
               Questions and Options (Select the correct answer)
             </label>
             {quiz.questions.map((q, questionIndex) => (
               <div key={questionIndex}>
                 <label
                   htmlFor={`question-${questionIndex}`}
-                  className="form-label"
+                  className='form-label'
                 >
                   Question {questionIndex + 1}
                 </label>
                 <input
-                  type="text"
-                  className="form-control mb-2"
+                  type='text'
+                  className='form-control mb-2'
                   id={`question-${questionIndex}`}
-                  placeholder="Enter question here..."
+                  placeholder='Enter question here...'
                   value={q.question}
                   onChange={(e) => handleQuestionChange(e, questionIndex)}
                 />
                 {q.options.map((o, optionIndex) => (
                   <div key={optionIndex}>
                     <input
-                      type="text"
-                      className="form-control  ms-3 w-75"
+                      type='text'
+                      className='form-control  ms-3 w-75'
                       id={`option-${questionIndex}-${optionIndex}`}
                       placeholder={"Enter option " + (optionIndex + 1)}
                       value={o.option}
@@ -261,8 +261,8 @@ const AddContent = () => {
                       }
                     />
                     <input
-                      type="checkbox"
-                      className="form-check-input ms-3 mb-2 me-3"
+                      type='checkbox'
+                      className='form-check-input ms-3 mb-2 me-3'
                       id={`isCorrect-${questionIndex}-${optionIndex}`}
                       checked={o.isCorrect}
                       onChange={(e) =>
@@ -270,7 +270,7 @@ const AddContent = () => {
                       }
                     />
                     <label
-                      className="form-check-label"
+                      className='form-check-label'
                       htmlFor={`isCorrect-${questionIndex}-${optionIndex}`}
                     >
                       Correct Answer {optionIndex + 1}
@@ -280,30 +280,30 @@ const AddContent = () => {
               </div>
             ))}
             <AddCircleOutlineRoundedIcon
-              className="ms-3"
+              className='ms-3'
               onClick={addQuestion}
             ></AddCircleOutlineRoundedIcon>
           </div>
         )}
-        <div className="mb-3">
-          <label htmlFor="status" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='status' className='form-label'>
             Status
           </label>
           <select
-            name="status"
-            id="status"
-            className="form-select"
+            name='status'
+            id='status'
+            className='form-select'
             value={content.status}
             onChange={(e) => setContent({ ...content, status: e.target.value })}
           >
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-            <option value="deleted">Deleted</option>
+            <option value='draft'>Draft</option>
+            <option value='published'>Published</option>
+            <option value='deleted'>Deleted</option>
           </select>
         </div>
-        <div className="d-flex justify-content-center">
+        <div className='d-flex justify-content-center'>
           <button
-            className="btn"
+            className='btn'
             onClick={addContent}
             style={{ borderColor: "#0455bf", color: "#0455bf" }}
           >
