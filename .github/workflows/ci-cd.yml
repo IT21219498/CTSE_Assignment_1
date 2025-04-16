@@ -36,7 +36,7 @@ jobs:
 
 
   docker-build-and-push:
-    name: Build and Push Docker Images to GCR
+    name: Build and Push Docker Images to Artifact Registry
     runs-on: ubuntu-latest
     needs: build-and-test
 
@@ -48,61 +48,50 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
-      
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-      
-      - name: Write GCP credentials to file
-        run: |
-          echo '${{ secrets.GCP_SA_KEY }}' > key.json
 
-      - name: Configure Docker to use GCR
+      - name: Set up Docker to use Artifact Registry
         run: |
-          gcloud auth activate-service-account --key-file=key.json
-          gcloud auth configure-docker --quiet
-
+          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
       - name: Build and Push Gateway Image
         run: |
-          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/gateway
+          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/gateway
           docker build -t $IMAGE ./gateway
           docker push $IMAGE
 
       - name: Build and Push User Service Image
         run: |
-          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/user-service
+          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/user-service
           docker build -t $IMAGE ./user-service
           docker push $IMAGE
 
       - name: Build and Push Course Service Image
         run: |
-          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/course-service
+          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/course-service
           docker build -t $IMAGE ./course-service
           docker push $IMAGE
 
       - name: Build and Push Learner Service Image
         run: |
-          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/learner-service
+          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/learner-service
           docker build -t $IMAGE ./learner-service
           docker push $IMAGE
 
       - name: Build and Push Payment Service Image
         run: |
-          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/payment-service
+          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/payment-service
           docker build -t $IMAGE ./payment-service
           docker push $IMAGE
 
       - name: Build and Push Notification Service Image
         run: |
-          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/notification-service
+          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/notification-service
           docker build -t $IMAGE ./notification-service
           docker push $IMAGE
 
       - name: Build and Push Frontend Image
         run: |
-          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend
+          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/frontend
           docker build -t $IMAGE ./frontend
           docker push $IMAGE
 
@@ -129,7 +118,7 @@ jobs:
       - name: Deploy User Service
         run: |
           gcloud run deploy user-service \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/user-service \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/user-service \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
             --allow-unauthenticated
@@ -137,7 +126,7 @@ jobs:
       - name: Deploy Gateway
         run: |
           gcloud run deploy gateway \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/gateway \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/gateway \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
             --allow-unauthenticated
@@ -145,7 +134,7 @@ jobs:
       - name: Deploy Course Service
         run: |
           gcloud run deploy course-service \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/course-service \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/course-service \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
             --allow-unauthenticated
@@ -153,7 +142,7 @@ jobs:
       - name: Deploy Learner Service
         run: |
           gcloud run deploy learner-service \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/learner-service \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/learner-service \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
             --allow-unauthenticated
@@ -161,7 +150,7 @@ jobs:
       - name: Deploy Payment Service
         run: |
           gcloud run deploy payment-service \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/payment-service \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/payment-service \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
             --allow-unauthenticated
@@ -169,7 +158,7 @@ jobs:
       - name: Deploy Notification Service
         run: |
           gcloud run deploy notification-service \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/notification-service \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/notification-service \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
             --allow-unauthenticated
@@ -177,7 +166,7 @@ jobs:
       - name: Deploy Frontend
         run: |
           gcloud run deploy frontend \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/frontend \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/frontend \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
             --allow-unauthenticated
