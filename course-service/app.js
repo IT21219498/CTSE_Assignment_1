@@ -20,7 +20,7 @@ app.use("/course", courseRouter);
 app.use("/company", companyRouter);
 
 //server config
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 9005;
 app.listen(PORT, async () => {
   try {
     await connect();

@@ -68,7 +68,7 @@ app.post("/create-product", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 9002;
 app.listen(PORT, async () => {
   try {
     // await connect();
