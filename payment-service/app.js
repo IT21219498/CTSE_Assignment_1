@@ -5,8 +5,7 @@ import dotenv from "dotenv";
 import { connect } from "./config/db_con.js";
 import morgan from "morgan";
 
-dotenv.config();
-
+dotenv.config({ path: "../.env" });
 const app = express();
 app.use(cors());
 app.use(express.static("public"));
@@ -68,7 +67,7 @@ app.post("/create-product", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 9002;
+const PORT = process.env.PAYMENT_SERVICE_PORT || 9002;
 app.listen(PORT, async () => {
   try {
     // await connect();

@@ -5,7 +5,7 @@ import cors from "cors";
 import { connect } from "./config/db_con.js";
 import learnerRouter from "./routes/Learner.js";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use(cors());
 app.use("/enrollment", learnerRouter);
 
 //server configuration
-const PORT = process.env.PORT || 9004;
+const PORT = process.env.LEARNING_SERVICE_PORT || 9004;
 app.listen(PORT, async () => {
   try {
     await connect();

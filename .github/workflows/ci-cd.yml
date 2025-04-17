@@ -34,7 +34,6 @@ jobs:
       - name: Skip Tests
         run: echo "No tests available. Skipping test step."
 
-
   docker-build-and-push:
     name: Build and Push Docker Images to Artifact Registry
     runs-on: ubuntu-latest
@@ -53,48 +52,13 @@ jobs:
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
-      - name: Build and Push Gateway Image
+      - name: Build and Push Docker Images
         run: |
-          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/gateway
-          docker build -t $IMAGE ./gateway
-          docker push $IMAGE
-
-      - name: Build and Push User Service Image
-        run: |
-          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/user-service
-          docker build -t $IMAGE ./user-service
-          docker push $IMAGE
-
-      - name: Build and Push Course Service Image
-        run: |
-          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/course-service
-          docker build -t $IMAGE ./course-service
-          docker push $IMAGE
-
-      - name: Build and Push Learner Service Image
-        run: |
-          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/learner-service
-          docker build -t $IMAGE ./learner-service
-          docker push $IMAGE
-
-      - name: Build and Push Payment Service Image
-        run: |
-          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/payment-service
-          docker build -t $IMAGE ./payment-service
-          docker push $IMAGE
-
-      - name: Build and Push Notification Service Image
-        run: |
-          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/notification-service
-          docker build -t $IMAGE ./notification-service
-          docker push $IMAGE
-
-      - name: Build and Push Frontend Image
-        run: |
-          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/frontend
-          docker build -t $IMAGE ./frontend
-          docker push $IMAGE
-
+          for SERVICE in gateway user-service course-service learner-service payment-service notification-service frontend; do
+            IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/$SERVICE
+            docker build -t $IMAGE ./$SERVICE
+            docker push $IMAGE
+          done
 
   deploy-to-cloudrun:
     name: Deploy to Google Cloud Run
@@ -115,21 +79,23 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Deploy User Service
-        run: |
-          gcloud run deploy user-service \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/user-service \
-            --platform managed \
-            --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated
-
       - name: Deploy Gateway
         run: |
           gcloud run deploy gateway \
             --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/gateway \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --set-env-vars "GATEWAY_PORT=8000,COURSE_SERVICE_URL=http://course-service:8001,USER_SERVICE_URL=http://user-service:8002,LEARNING_SERVICE_URL=http://learner-service:8003,PAYMENT_SERVICE_URL=http://payment-service:8004,NOTIFICATION_SERVICE_URL=http://notification-service:8005"
+
+      - name: Deploy User Service
+        run: |
+          gcloud run deploy user-service \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/user-service \
+            --platform managed \
+            --region ${{ secrets.GCP_REGION }} \
+            --allow-unauthenticated \
+            --set-env-vars "USER_SERVICE_PORT=8002,JWT_SECRET=${{ secrets.JWT_SECRET }},CONNECTION_STRING=${{ secrets.DB_URL }}"
 
       - name: Deploy Course Service
         run: |
@@ -137,7 +103,8 @@ jobs:
             --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/course-service \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --set-env-vars "COURSE_SERVICE_PORT=8001,CONNECTION_STRING=${{ secrets.DB_URL }},CLOUDINARY_NAME=diiyul5rg,CLOUDINARY_API_KEY=811621628529636,CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }},CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }},USER_SERVICE_URL=http://localhost:8002,NOTIFICATION_SERVICE_URL=http://localhost:8003"
 
       - name: Deploy Learner Service
         run: |
@@ -145,7 +112,8 @@ jobs:
             --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/learner-service \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --set-env-vars "LEARNING_SERVICE_PORT=8003,CONNECTION_STRING=${{ secrets.DB_URL }},COURSE_SERVICE_URL=http://localhost:8001,USER_SERVICE_URL=http://localhost:8002"
 
       - name: Deploy Payment Service
         run: |
@@ -153,7 +121,8 @@ jobs:
             --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/payment-service \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --set-env-vars "PAYMENT_SERVICE_PORT=8004,STRIPE_KEY=${{ secrets.STRIPE_KEY }}"
 
       - name: Deploy Notification Service
         run: |
@@ -161,7 +130,8 @@ jobs:
             --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/notification-service \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --set-env-vars "NOTIFICATION_SERVICE_PORT=8005,USER=${{ secrets.EMAIL_USER }},PASSWORD=${{ secrets.EMAIL_PASSWORD }}"
 
       - name: Deploy Frontend
         run: |

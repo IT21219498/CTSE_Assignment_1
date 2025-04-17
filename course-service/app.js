@@ -6,7 +6,7 @@ import { connect } from "./config/db_con.js";
 import courseRouter from "./routes/course.js";
 import companyRouter from "./routes/company.js";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.use("/course", courseRouter);
 app.use("/company", companyRouter);
 
 //server config
-const PORT = process.env.PORT || 9005;
+const PORT = process.env.COURSE_SERVICE_PORT || 9005;
 app.listen(PORT, async () => {
   try {
     await connect();
