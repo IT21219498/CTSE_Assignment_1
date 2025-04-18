@@ -17,7 +17,7 @@ app.use(cors());
 app.use("/", authRouter);
 
 //server config
-const PORT = process.env.USER_SERVICE_PORT || 9001;
+const PORT = process.env.PORT || 9001;
 app.listen(PORT, async () => {
   try {
     await connect();

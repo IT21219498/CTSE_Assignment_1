@@ -27,7 +27,7 @@ app.all("*", (req, res) => {
 });
 
 //server config
-const PORT = process.env.GATEWAY_PORT || 9000;
+const PORT = process.env.PORT || 9000;
 app.listen(PORT, async () => {
   try {
     console.log(`Gateway is running on port ${PORT}`);

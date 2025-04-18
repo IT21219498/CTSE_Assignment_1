@@ -69,7 +69,7 @@ app.post("/send-notification", async (req, res) => {
 });
 
 //server config
-const PORT = process.env.NOTIFICATION_SERVICE_PORT || 9003;
+const PORT = process.env.PORT || 9003;
 app.listen(PORT, async () => {
   try {
     // await connect();

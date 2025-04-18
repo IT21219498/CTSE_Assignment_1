@@ -67,7 +67,7 @@ app.post("/create-product", async (req, res) => {
   }
 });
 
-const PORT = process.env.PAYMENT_SERVICE_PORT || 9002;
+const PORT = process.env.PORT || 9002;
 app.listen(PORT, async () => {
   try {
     // await connect();
