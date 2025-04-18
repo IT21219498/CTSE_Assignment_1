@@ -1,17 +1,29 @@
-FROM node:18-alpine
+# Stage 1: Build the application
+FROM node:18-alpine AS builder
 
-#working directory
-WORKDIR /app    
+# Set working directory
+WORKDIR /app
 
-COPY package.json .
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-#Install dependencies
-RUN npm install
+# Install dependencies
+RUN npm ci
 
-#copy source files in to new folder called app
+# Copy source files
 COPY . .
 
-#Export the port
-EXPOSE 3000
+# Build the application
+RUN npm run build
 
-CMD [ "npm","start" ]
+# Stage 2: Serve the application
+FROM nginx:stable-alpine
+
+# Copy built files from the builder stage
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Expose the port
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]

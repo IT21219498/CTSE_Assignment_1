@@ -1,19 +1,23 @@
+# Use a lightweight Node.js image
 FROM node:18-alpine
 
-#Install nodemon globally
-RUN npm install -g nodemon
-
-#set the working directory
+# Set the working directory
 WORKDIR /app
 
-#copy source files in to new folder called app
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production
+
+# Copy the rest of the application source code
 COPY . .
 
-#Install dependencies
-RUN npm install 
+# Set the environment to production
+ENV NODE_ENV=production
 
-#Export the port
+# Expose the port
 EXPOSE 8004
 
-#command to run the application
-CMD ["npm", "run", "dev"]
+# Command to run the application
+CMD ["node", "app.js"]
