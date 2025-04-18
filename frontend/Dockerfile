@@ -22,8 +22,14 @@ FROM nginx:stable-alpine
 # Copy built files from the builder stage
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Expose the port
-EXPOSE 80
+# Set the PORT environment variable for Nginx
+ENV PORT=8080
 
-# Start nginx
+# Update Nginx configuration to use the PORT environment variable
+RUN sed -i 's/listen       80;/listen       ${PORT};/' /etc/nginx/conf.d/default.conf
+
+# Expose the port
+EXPOSE 8080
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
