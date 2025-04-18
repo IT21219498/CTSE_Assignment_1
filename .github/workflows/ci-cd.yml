@@ -35,7 +35,10 @@ jobs:
         run: echo "No tests available. Skipping test step."
 
   docker-build-and-push:
-    name: Build and Push Docker Images to Artifact Registry
+    strategy:
+      matrix:
+        service: [gateway, user-service, course-service, learner-service, payment-service, notification-service, frontend]
+    name: Build and Push ${{ matrix.service }}
     runs-on: ubuntu-latest
     needs: build-and-test
 
@@ -52,16 +55,17 @@ jobs:
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
-      - name: Build and Push Docker Images
+      - name: Build and Push ${{ matrix.service }} Image
         run: |
-          for SERVICE in gateway user-service course-service learner-service payment-service notification-service frontend; do
-            IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/$SERVICE
-            docker build -t $IMAGE ./$SERVICE
-            docker push $IMAGE
-          done
+          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/${{ matrix.service }}
+          docker build -t $IMAGE ./${{ matrix.service }}
+          docker push $IMAGE
 
-  deploy-to-cloudrun:
-    name: Deploy to Google Cloud Run
+  deploy:
+    strategy:
+      matrix:
+        service: [gateway, user-service, course-service, learner-service, payment-service, notification-service, frontend]
+    name: Deploy ${{ matrix.service }}
     runs-on: ubuntu-latest
     needs: docker-build-and-push
 
@@ -79,64 +83,31 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Deploy Gateway
+      - name: Deploy ${{ matrix.service }}
         run: |
-          gcloud run deploy gateway \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/gateway \
+          SERVICE_NAME=${{ matrix.service }}
+          IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/${{ matrix.service }}
+
+          # Define environment variables for each service
+          if [[ "$SERVICE_NAME" == "gateway" ]]; then
+            ENV_VARS="COURSE_SERVICE_URL=https://course-service-url,USER_SERVICE_URL=https://user-service-url,LEARNING_SERVICE_URL=https://learner-service-url,PAYMENT_SERVICE_URL=https://payment-service-url,NOTIFICATION_SERVICE_URL=https://notification-service-url"
+          elif [[ "$SERVICE_NAME" == "user-service" ]]; then
+            ENV_VARS="JWT_SECRET=${{ secrets.JWT_SECRET }},CONNECTION_STRING=${{ secrets.DB_URL }}"
+          elif [[ "$SERVICE_NAME" == "course-service" ]]; then
+            ENV_VARS="CONNECTION_STRING=${{ secrets.DB_URL }},CLOUDINARY_NAME=diiyul5rg,CLOUDINARY_API_KEY=811621628529636,CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }},CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }},USER_SERVICE_URL=https://user-service-url,NOTIFICATION_SERVICE_URL=https://notification-service-url"
+          elif [[ "$SERVICE_NAME" == "learner-service" ]]; then
+            ENV_VARS="CONNECTION_STRING=${{ secrets.DB_URL }},COURSE_SERVICE_URL=https://course-service-url,USER_SERVICE_URL=https://user-service-url"
+          elif [[ "$SERVICE_NAME" == "payment-service" ]]; then
+            ENV_VARS="STRIPE_KEY=${{ secrets.STRIPE_KEY }}"
+          elif [[ "$SERVICE_NAME" == "notification-service" ]]; then
+            ENV_VARS="USER=${{ secrets.EMAIL_USER }},PASSWORD=${{ secrets.EMAIL_PASSWORD }}"
+          else
+            ENV_VARS=""
+          fi
+
+          gcloud run deploy $SERVICE_NAME \
+            --image $IMAGE \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
             --allow-unauthenticated \
-            --set-env-vars "GATEWAY_PORT=8000,COURSE_SERVICE_URL=http://course-service:8001,USER_SERVICE_URL=http://user-service:8002,LEARNING_SERVICE_URL=http://learner-service:8003,PAYMENT_SERVICE_URL=http://payment-service:8004,NOTIFICATION_SERVICE_URL=http://notification-service:8005"
-
-      - name: Deploy User Service
-        run: |
-          gcloud run deploy user-service \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/user-service \
-            --platform managed \
-            --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated \
-            --set-env-vars "USER_SERVICE_PORT=8002,JWT_SECRET=${{ secrets.JWT_SECRET }},CONNECTION_STRING=${{ secrets.DB_URL }}"
-
-      - name: Deploy Course Service
-        run: |
-          gcloud run deploy course-service \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/course-service \
-            --platform managed \
-            --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated \
-            --set-env-vars "COURSE_SERVICE_PORT=8001,CONNECTION_STRING=${{ secrets.DB_URL }},CLOUDINARY_NAME=diiyul5rg,CLOUDINARY_API_KEY=811621628529636,CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }},CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }},USER_SERVICE_URL=http://localhost:8002,NOTIFICATION_SERVICE_URL=http://localhost:8003"
-
-      - name: Deploy Learner Service
-        run: |
-          gcloud run deploy learner-service \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/learner-service \
-            --platform managed \
-            --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated \
-            --set-env-vars "LEARNING_SERVICE_PORT=8003,CONNECTION_STRING=${{ secrets.DB_URL }},COURSE_SERVICE_URL=http://localhost:8001,USER_SERVICE_URL=http://localhost:8002"
-
-      - name: Deploy Payment Service
-        run: |
-          gcloud run deploy payment-service \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/payment-service \
-            --platform managed \
-            --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated \
-            --set-env-vars "PAYMENT_SERVICE_PORT=8004,STRIPE_KEY=${{ secrets.STRIPE_KEY }}"
-
-      - name: Deploy Notification Service
-        run: |
-          gcloud run deploy notification-service \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/notification-service \
-            --platform managed \
-            --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated \
-            --set-env-vars "NOTIFICATION_SERVICE_PORT=8005,USER=${{ secrets.EMAIL_USER }},PASSWORD=${{ secrets.EMAIL_PASSWORD }}"
-
-      - name: Deploy Frontend
-        run: |
-          gcloud run deploy frontend \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/frontend \
-            --platform managed \
-            --region ${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated
+            --set-env-vars "$ENV_VARS"
