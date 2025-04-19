@@ -19,16 +19,16 @@ app.use("/api/enrollment/", proxy(process.env.LEARNING_SERVICE_URL));
 app.use("/api/payment/", proxy(process.env.PAYMENT_SERVICE_URL));
 app.use("/api/notification/", proxy(process.env.NOTIFICATION_SERVICE_URL));
 
+//default route
+app.get("/", (req, res) => {
+  res.send("Welcome to the Gateway Service");
+});
+
 app.all("*", (req, res) => {
   res.status(404).json({
     status: "fail",
     message: `Can't find ${req.originalUrl} on this server!`,
   });
-});
-
-//default route
-app.get("/", (req, res) => {
-  res.send("Welcome to the Gateway Service");
 });
 
 //server config

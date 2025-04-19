@@ -11,9 +11,9 @@ dotenv.config();
 const app = express();
 
 //middlewares
-app.use(express.json()); //Send respones in json fomrat
-app.use(morgan("tiny")); //log requests
-app.use(cors()); //enable cors
+app.use(express.json()); //Send responses in JSON format
+app.use(morgan("tiny")); //Log requests
+app.use(cors()); //Enable CORS
 
 //routes
 app.use("/course", courseRouter);
@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 9005;
 app.listen(PORT, async () => {
   try {
     await connect();
-    console.log(`Sever is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
   } catch (err) {
     console.log(err);
   }
