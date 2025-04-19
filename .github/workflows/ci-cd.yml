@@ -34,6 +34,31 @@ jobs:
       - name: Skip Tests
         run: echo "No tests available. Skipping test step."
 
+  sonarcloud-analysis:
+    name: SonarCloud Analysis
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install --prefix ./user-service
+
+      - name: Run SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          organization: it21219498
+          projectKey: IT21219498_CTSE_Assignment_1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
   docker-build-and-push:
     strategy:
       matrix:
@@ -49,7 +74,7 @@ jobs:
           ]
     name: Build and Push ${{ matrix.service }}
     runs-on: ubuntu-latest
-    needs: build-and-test
+    needs: sonarcloud-analysis
 
     steps:
       - name: Checkout Code
