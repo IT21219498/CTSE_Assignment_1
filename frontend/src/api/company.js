@@ -1,8 +1,10 @@
+import { API_BASE_URL } from "../config/config";
+
 export const createCompany = async (company) => {
   try {
     console.log(company);
     const response = await fetch(
-      "http://localhost:8001/company/createCompany",
+      `${API_BASE_URL}course/company/createCompany`,
       {
         method: "POST",
         headers: {

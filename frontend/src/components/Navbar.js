@@ -5,7 +5,7 @@ import ToastContext from "../context/ToastContext";
 import Logo from "../assets/Logo2.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-
+import { API_BASE_URL } from "../config/config";
 //Navbar functional component
 const Navbar = () => {
   // Access toast and user information from respective contexts
@@ -22,7 +22,7 @@ const Navbar = () => {
   }, []);
 
   const whileTypingCourseSearch = (e) => {
-    fetch(`http://localhost:8001/course/search/${e.target.value}`)
+    fetch(`${API_BASE_URL}course/search/${e.target.value}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.courses.length > 0) {

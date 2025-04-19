@@ -1,4 +1,5 @@
 import React from "react";
+import { API_BASE_URL } from "../config/config";
 
 function SampleCourse() {
   const courses = [
@@ -20,7 +21,7 @@ function SampleCourse() {
   ];
 
   const handleCheckout = async () => {
-    await fetch("http://localhost:8003/checkout", {
+    await fetch(`${API_BASE_URL}payment/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

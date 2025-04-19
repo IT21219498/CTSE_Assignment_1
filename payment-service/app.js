@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import { connect } from "./config/db_con.js";
 import morgan from "morgan";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.static("public"));
@@ -36,8 +36,8 @@ app.post("/checkout", async (req, res) => {
   const session = await stripeClient.checkout.sessions.create({
     line_items: courseItems,
     mode: "payment",
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cancel",
+    success_url: "https://frontend-965928461642.us-central1.run.app/success",
+    cancel_url: "https://frontend-965928461642.us-central1.run.app/cancel",
   });
 
   res.send(JSON.stringify({ url: session.url }));

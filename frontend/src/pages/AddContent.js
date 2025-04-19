@@ -4,6 +4,7 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import ToastContext from "../context/ToastContext";
 // import ReactQuill from "react-quill";
 // import "react-quill/dist/quill.snow.css";
+import { API_BASE_URL } from "../config/config";
 
 const AddContent = () => {
   const { toast } = useContext(ToastContext);
@@ -89,7 +90,7 @@ const AddContent = () => {
   const addContent = async () => {
     if (validateContent()) return;
     try {
-      const response = await fetch("http://localhost:8001/course/addContent", {
+      const response = await fetch(`${API_BASE_URL}course/course/addContent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,9 +112,7 @@ const AddContent = () => {
 
   const getCourseNameAndId = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8001/course/getCourseNameAndId"
-      );
+      const response = await fetch(`${API_BASE_URL}course/getCourseNameAndId`);
       const data = await response.json();
       if (data.error) {
         setError(data.error);

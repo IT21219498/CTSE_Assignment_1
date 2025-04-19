@@ -89,13 +89,15 @@ export const register = async (req, res) => {
 
     //save user
     const result = await newUser.save();
-
-    await axios.post("http://localhost:8005/send-notification", {
-      studentEmails: ["donzchamika@gmail.com"],
-      subject: "EduRookie - Registration Success!",
-      message:
-        "Welcome to EduRookie! You have successfully registered to our platform. Enjoy learning!",
-    });
+    await axios.post(
+      `${process.env.NOTIFICATION_SERVICE_URL}notification/send-notification`,
+      {
+        studentEmails: ["donzchamika@gmail.com"],
+        subject: "EduRookie - Registration Success!",
+        message:
+          "Welcome to EduRookie! You have successfully registered to our platform. Enjoy learning!",
+      }
+    );
 
     result._doc.password = undefined;
 

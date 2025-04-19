@@ -4,6 +4,7 @@ import "./Success.css";
 import AuthContext from "../context/AuthContext";
 import CommonContext from "../context/CommonContext";
 import ToastContext from "../context/ToastContext";
+import { API_BASE_URL } from "../config/config";
 
 function Success() {
   const { user } = useContext(AuthContext);
@@ -15,7 +16,7 @@ function Success() {
     //get the course id from the local storage
     const selectedCourseId = localStorage.getItem("selectedCourseId");
     const response = await fetch(
-      `http://localhost:8003/enrollment/addNewEnrollment/${selectedCourseId}`,
+      `${API_BASE_URL}enrollment/enrollment/addNewEnrollment/${selectedCourseId}`,
       {
         method: "POST",
         headers: {

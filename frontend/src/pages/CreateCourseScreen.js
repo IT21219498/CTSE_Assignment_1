@@ -5,6 +5,7 @@ import ToastContext from "../context/ToastContext";
 import AuthContext from "../context/AuthContext";
 // import ReactQuill from "react-quill";
 // import "react-quill/dist/quill.snow.css";
+import { API_BASE_URL } from "../config/config";
 
 const CreateCourseScreen = () => {
   const [companies, setCompanies] = useState([]);
@@ -29,7 +30,7 @@ const CreateCourseScreen = () => {
   const getCompanies = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8001/company/getCompanyNames"
+        `${API_BASE_URL}course/company/getCompanyNames`
       );
       const data = await response.json();
       setCompanies(data.companies);
@@ -68,7 +69,7 @@ const CreateCourseScreen = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8001/course/createCourse",
+        `${API_BASE_URL}course/course/createCourse`,
         {
           method: "POST",
           headers: {

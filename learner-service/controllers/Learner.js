@@ -10,7 +10,7 @@ const addNewEnrollment = async (req, res) => {
   async function fetchCourse(courseId) {
     try {
       const response = await axios.get(
-        `${process.env.COURSE_SERVICE_URL}/course/getCourseById/${courseId}`
+        `${process.env.GATEWAY_URL}course/course/getCourseById/${courseId}`
       );
       return response.data;
     } catch (error) {
@@ -20,12 +20,15 @@ const addNewEnrollment = async (req, res) => {
 
   async function fetchUser() {
     try {
-      const response = await axios.get(`http://localhost:8002/api/me`, {
-        headers: {
-          // "Content-Type": "application/json",
-          Authorization: jwtToken,
-        },
-      });
+      const response = await axios.get(
+        `${process.env.GATEWAY_URL}user/api/me`,
+        {
+          headers: {
+            // "Content-Type": "application/json",
+            Authorization: jwtToken,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       throw new Error("User cannot be found!");
@@ -55,12 +58,15 @@ const addNewEnrollment = async (req, res) => {
     });
     const savedEnrollment = await newEnrollment.save();
 
-    await axios.post("http://localhost:8005/send-notification", {
-      studentEmails: ["donzchamika@gmail.com"],
-      subject: "EduRookie - New Course Enrollment!",
-      message:
-        "You have successfully enrolled in the course. Please wait for the approval from the admin!",
-    });
+    await axios.post(
+      `${process.env.GATEWAY_URL}notification/send-notification`,
+      {
+        studentEmails: ["donzchamika@gmail.com"],
+        subject: "EduRookie - New Course Enrollment!",
+        message:
+          "You have successfully enrolled in the course. Please wait for the approval from the admin!",
+      }
+    );
     return res.status(201).json(savedEnrollment);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -74,7 +80,7 @@ const cancelEnrollment = async (req, res) => {
   async function fecthUser() {
     try {
       const response = await axios.get(
-        `${process.env.USER_SERVICE_URL}/user/me`,
+        `${process.env.GATEWAY_URL}user/user/me`,
         {
           headers: {
             Authorization: jwtToken,
@@ -122,7 +128,7 @@ const enrollInCourses = async (req, res) => {
   const fetchAllCourses = async () => {
     try {
       const response = await axios.get(
-        `${process.env.COURSE_SERVICE_URL}/course/getAllCourses`,
+        `${process.env.GATEWAY_URL}course/course/getAllCourses`,
         {
           headers: {
             Authorization: jwtToken,
@@ -138,7 +144,7 @@ const enrollInCourses = async (req, res) => {
   async function fecthUser() {
     try {
       const response = await axios.get(
-        `${process.env.USER_SERVICE_URL}/api/me`,
+        `${process.env.GATEWAY_URL}user/api/me`,
         {
           headers: {
             Authorization: jwtToken,
@@ -222,7 +228,7 @@ const updateLearnedContent = async (req, res) => {
   async function fecthUser() {
     try {
       const response = await axios.get(
-        `${process.env.USER_SERVICE_URL}/api/me`,
+        `${process.env.GATEWAY_URL}user/api/me`,
         {
           headers: {
             Authorization: jwtToken,

@@ -5,7 +5,7 @@ import cors from "cors";
 import { connect } from "./config/db_con.js";
 import authRouter from "./routes/auth.js";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 const app = express();
 
 //middlewares

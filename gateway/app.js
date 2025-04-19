@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import proxy from "express-http-proxy";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 const app = express();
 

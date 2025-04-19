@@ -29,7 +29,7 @@ export const createCourse = async (req, res) => {
   try {
     // Create a product in Stripe
     const { data: stripeProduct } = await axios.post(
-      "http://localhost:8004/create-product",
+      `${process.env.GATEWAY_URL}payment/create-product`,
       {
         name: title,
         price: price * 100,
@@ -51,12 +51,15 @@ export const createCourse = async (req, res) => {
     await course.save();
 
     // http://localhost:8005/send-notification
-    await axios.post("http://localhost:8005/send-notification", {
-      studentEmails: ["donzchamika@gmail.com"],
-      subject: "EduRookie - New Course Created",
-      message:
-        "Course created successfully! Please check the course list for more details.",
-    });
+    await axios.post(
+      `${process.env.GATEWAY_URL}notification/send-notification`,
+      {
+        studentEmails: ["donzchamika@gmail.com"],
+        subject: "EduRookie - New Course Created",
+        message:
+          "Course created successfully! Please check the course list for more details.",
+      }
+    );
 
     res.status(201).json({ course });
   } catch (error) {
@@ -195,7 +198,7 @@ export const getCourseByUserId = async (req, res) => {
     async function fecthUser() {
       try {
         const response = await axios.get(
-          `${process.env.USER_SERVICE_URL}/api/me`,
+          `${process.env.GATEWAY_URL}user/api/me`,
           {
             headers: {
               Authorization: jwtToken,

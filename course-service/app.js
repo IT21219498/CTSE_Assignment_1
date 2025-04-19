@@ -6,7 +6,7 @@ import { connect } from "./config/db_con.js";
 import courseRouter from "./routes/course.js";
 import companyRouter from "./routes/company.js";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 const app = express();
 

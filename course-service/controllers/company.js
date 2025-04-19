@@ -19,7 +19,7 @@ export const createCompany = async (req, res) => {
     const role = "Instructor";
 
     axios
-      .post(`${process.env.USER_SERVICE_URL}/api/register`, {
+      .post(`${process.env.GATEWAY_URL}user/api/register`, {
         email,
         password,
         role,

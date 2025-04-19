@@ -12,6 +12,7 @@ import {
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
+import { API_BASE_URL } from "../config/config";
 
 const CourseContent = () => {
   const { setIsEnrolled, isEnrolled } = useContext(CommonContext);
@@ -41,7 +42,7 @@ const CourseContent = () => {
     }
 
     const data = await fetch(
-      `http://localhost:8003/enrollment/isEnrolled/${user._id}/${selectedCourseId}`
+      `${API_BASE_URL}enrollment/enrollment/isEnrolled/${user._id}/${selectedCourseId}`
     );
     const response = await data.json();
     console.log("🚀 ~ getEnrolledCourses ~ response:", response);
@@ -54,7 +55,7 @@ const CourseContent = () => {
 
   const handleCourseClick = async () => {
     const data = await fetch(
-      `http://localhost:8001/course/getCourseById/${selectedCourseId}`
+      `${API_BASE_URL}course/course/getCourseById/${selectedCourseId}`
     );
     const response = await data.json();
     const sortedContent = response.course.content.sort(
@@ -80,7 +81,7 @@ const CourseContent = () => {
   };
 
   const handleEnrollment = async () => {
-    const data = await fetch(`http://localhost:8004/checkout`, {
+    const data = await fetch(`${API_BASE_URL}payment/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

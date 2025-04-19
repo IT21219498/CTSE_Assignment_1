@@ -3,6 +3,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import CommonContext from "../context/CommonContext";
+import { API_BASE_URL } from "../config/config";
 
 const Companies = () => {
   const [companies, setCompanies] = useState([]);
@@ -16,7 +17,7 @@ const Companies = () => {
   const getCompanies = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8001/company/getComapanies",
+        `${API_BASE_URL}course/company/getComapanies`,
         {
           headers: {
             //Bearer token
@@ -39,7 +40,7 @@ const Companies = () => {
     navigate("/updateCompany");
   };
   return (
-    <div className="container ">
+    <div className='container '>
       <Row>
         {companies ? (
           companies.map((company) => (
@@ -49,7 +50,7 @@ const Companies = () => {
                 onClick={() => onclickCompany(company._id)}
               >
                 <Card.Img
-                  variant="top"
+                  variant='top'
                   src={company.logo}
                   style={{ height: 250 }}
                 />

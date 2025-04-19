@@ -3,6 +3,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import CommonContext from "../context/CommonContext";
+import { API_BASE_URL } from "../config/config";
 
 const CompanyCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -16,7 +17,7 @@ const CompanyCourses = () => {
   const getCourseByUserId = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8001/course/getCourseByUserId",
+        `${API_BASE_URL}course/course/getCourseByUserId`,
         {
           headers: {
             //Bearer token
@@ -39,7 +40,7 @@ const CompanyCourses = () => {
     navigate("/updateContent");
   };
   return (
-    <div className="container ">
+    <div className='container '>
       <Row>
         {courses ? (
           courses.map((course) => (
@@ -48,7 +49,7 @@ const CompanyCourses = () => {
                 style={{ width: "100%", marginBottom: "20px" }}
                 onClick={() => onclickCourse(course._id)}
               >
-                <Card.Img variant="top" src={course.image} />
+                <Card.Img variant='top' src={course.image} />
                 <Card.Body>
                   <Card.Title>{course.title}</Card.Title>
                   {/* <Card.Text>{course.description}</Card.Text> */}
