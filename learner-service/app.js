@@ -16,6 +16,11 @@ app.use(cors());
 
 app.use("/enrollment", learnerRouter);
 
+//default route
+app.get("/", (req, res) => {
+  res.send("Welcome to the Learner Service");
+});
+
 //server configuration
 const PORT = process.env.PORT || 9004;
 app.listen(PORT, async () => {

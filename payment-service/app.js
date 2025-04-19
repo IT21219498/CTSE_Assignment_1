@@ -67,6 +67,11 @@ app.post("/create-product", async (req, res) => {
   }
 });
 
+//default route
+app.get("/", (req, res) => {
+  res.send("Welcome to the Payment Service");
+});
+
 const PORT = process.env.PORT || 9002;
 app.listen(PORT, async () => {
   try {

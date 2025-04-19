@@ -19,6 +19,11 @@ app.use(cors()); //enable cors
 app.use("/course", courseRouter);
 app.use("/company", companyRouter);
 
+//default route
+app.get("/", (req, res) => {
+  res.send("Welcome to the Course Service");
+});
+
 //server config
 const PORT = process.env.PORT || 9005;
 app.listen(PORT, async () => {

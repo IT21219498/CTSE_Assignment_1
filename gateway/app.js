@@ -26,6 +26,11 @@ app.all("*", (req, res) => {
   });
 });
 
+//default route
+app.get("/", (req, res) => {
+  res.send("Welcome to the Gateway Service");
+});
+
 //server config
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, async () => {

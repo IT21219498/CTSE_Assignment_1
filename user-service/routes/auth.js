@@ -12,6 +12,11 @@ const router = express.Router();
 router.post("/register", register);
 router.post("/login", login);
 
+//default route
+router.get("/", (req, res) => {
+  res.send("Welcome to the User Service");
+});
+
 router.get("/me", auth, async (req, res) => {
   // return res.status(200).json({ ...req.user._doc });
   try {

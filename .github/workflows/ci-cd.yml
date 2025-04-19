@@ -78,6 +78,22 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         continue-on-error: true
 
+      - name: Upload Coverage Report for ${{ matrix.service }}
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.service }}
+          path: ./${{ matrix.service }}/coverage/lcov.info
+
+      - name: Save SonarCloud Logs
+        run: cp ./${{ matrix.service }}/.scannerwork/report-task.txt logs-${{ matrix.service }}.txt || true
+
+      - name: Upload SonarCloud Logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: sonar-logs-${{ matrix.service }}
+          path: logs-${{ matrix.service }}.txt
+
   snyk-security-scan:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
@@ -197,7 +213,6 @@ jobs:
             ENV_VARS=""
           fi
 
-          # Deploy to Cloud Run
           gcloud run deploy $SERVICE_NAME \
             --image $IMAGE \
             --platform managed \
