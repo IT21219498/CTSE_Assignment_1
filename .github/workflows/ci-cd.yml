@@ -176,11 +176,11 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Deploy ${{ matrix.service }}
+        id: deploy
         run: |
           SERVICE_NAME=${{ matrix.service }}
           IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/${{ matrix.service }}
 
-          # Define environment variables for each service
           if [[ "$SERVICE_NAME" == "gateway" ]]; then
             ENV_VARS="COURSE_SERVICE_URL=https://course-service-965928461642.us-central1.run.app,USER_SERVICE_URL=https://user-service-965928461642.us-central1.run.app,LEARNING_SERVICE_URL=https://learner-service-965928461642.us-central1.run.app,PAYMENT_SERVICE_URL=https://payment-service-965928461642.us-central1.run.app,NOTIFICATION_SERVICE_URL=https://notification-service-965928461642.us-central1.run.app"
           elif [[ "$SERVICE_NAME" == "user-service" ]]; then
@@ -197,9 +197,29 @@ jobs:
             ENV_VARS=""
           fi
 
+          # Deploy to Cloud Run
           gcloud run deploy $SERVICE_NAME \
             --image $IMAGE \
             --platform managed \
             --region ${{ secrets.GCP_REGION }} \
             --allow-unauthenticated \
             --set-env-vars "$ENV_VARS"
+
+      - name: Health Check for ${{ matrix.service }}
+        run: |
+          URL=https://${{ matrix.service }}-965928461642.us-central1.run.app
+          echo "Checking service health at $URL"
+          for i in {1..5}; do
+            if curl -sf $URL; then
+              echo "✅ $URL is healthy."
+              exit 0
+            else
+              echo "Waiting for $URL... ($i)"
+              sleep 5
+            fi
+          done
+
+          echo "❌ $URL failed health check. Rolling back..."
+          PREV_REV=$(gcloud run revisions list --service ${{ matrix.service }} --region ${{ secrets.GCP_REGION }} --sort-by="~createTime" --limit=2 --format="value(metadata.name)" | tail -n 1)
+          gcloud run services update-traffic ${{ matrix.service }} --region ${{ secrets.GCP_REGION }} --to-revisions=$PREV_REV=100
+          exit 1
