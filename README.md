@@ -25,15 +25,15 @@ This project is a cloud-native microservices-based application deployed using **
 
 ## 🚀 Live URLs
 
-| Service                | Cloud Run URL                               |
-| ---------------------- | ------------------------------------------- |
-| `gateway`              | https://gateway-\*\*\*.run.app              |
-| `user-service`         | https://user-service-\*\*\*.run.app         |
-| `course-service`       | https://course-service-\*\*\*.run.app       |
-| `learner-service`      | https://learner-service-\*\*\*.run.app      |
-| `payment-service`      | https://payment-service-\*\*\*.run.app      |
-| `notification-service` | https://notification-service-\*\*\*.run.app |
-| `frontend`             | https://frontend-\*\*\*.run.app             |
+| Service                | Cloud Run URL                                                 |
+| ---------------------- | ------------------------------------------------------------- |
+| `gateway`              | https://gateway-965928461642.us-central1.run.app              |
+| `user-service`         | https://user-service-965928461642.us-central1.run.app         |
+| `course-service`       | https://course-service-965928461642.us-central1.run.app       |
+| `learner-service`      | https://learner-service-965928461642.us-central1.run.app      |
+| `payment-service`      | https://payment-service-965928461642.us-central1.run.app      |
+| `notification-service` | https://notification-service-965928461642.us-central1.run.app |
+| `frontend`             | https://frontend-965928461642.us-central1.run.app             |
 
 > ⚠️ Replace `***` with your actual GCP project hash or ID.
 
