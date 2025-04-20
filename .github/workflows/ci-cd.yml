@@ -198,13 +198,13 @@ jobs:
           IMAGE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/docker-repo/${{ matrix.service }}
 
           if [[ "$SERVICE_NAME" == "gateway" ]]; then
-            ENV_VARS="COURSE_SERVICE_URL=https://course-service-965928461642.us-central1.run.app,USER_SERVICE_URL=https://user-service-965928461642.us-central1.run.app,LEARNING_SERVICE_URL=https://learner-service-965928461642.us-central1.run.app,PAYMENT_SERVICE_URL=https://payment-service-965928461642.us-central1.run.app,NOTIFICATION_SERVICE_URL=https://notification-service-965928461642.us-central1.run.app"
+            ENV_VARS="COURSE_SERVICE_URL=${{ secrets.COURSE_SERVICE_URL }},USER_SERVICE_URL=${{ secrets.USER_SERVICE_URL }},LEARNING_SERVICE_URL=${{ secrets.LEARNING_SERVICE_URL }},PAYMENT_SERVICE_URL=${{ secrets.PAYMENT_SERVICE_URL }},NOTIFICATION_SERVICE_URL=${{ secrets.NOTIFICATION_SERVICE_URL }}"
           elif [[ "$SERVICE_NAME" == "user-service" ]]; then
-            ENV_VARS="JWT_SECRET=${{ secrets.JWT_SECRET }},CONNECTION_STRING=${{ secrets.CONNECTION_STRING }},GATEWAY_URL=https://gateway-965928461642.us-central1.run.app"
+            ENV_VARS="JWT_SECRET=${{ secrets.JWT_SECRET }},CONNECTION_STRING=${{ secrets.CONNECTION_STRING }},GATEWAY_URL=${{ secrets.GATEWAY_URL }}"
           elif [[ "$SERVICE_NAME" == "course-service" ]]; then
-            ENV_VARS="CONNECTION_STRING=${{ secrets.CONNECTION_STRING }},CLOUDINARY_NAME=diiyul5rg,CLOUDINARY_API_KEY=811621628529636,CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }},CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }},GATEWAY_URL=https://gateway-965928461642.us-central1.run.app"
+            ENV_VARS="CONNECTION_STRING=${{ secrets.CONNECTION_STRING }},CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }},CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }},CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }},CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }},GATEWAY_URL=${{ secrets.GATEWAY_URL }}"
           elif [[ "$SERVICE_NAME" == "learner-service" ]]; then
-            ENV_VARS="CONNECTION_STRING=${{ secrets.CONNECTION_STRING }},GATEWAY_URL=https://gateway-965928461642.us-central1.run.app"
+            ENV_VARS="CONNECTION_STRING=${{ secrets.CONNECTION_STRING }},GATEWAY_URL=${{ secrets.GATEWAY_URL }}"
           elif [[ "$SERVICE_NAME" == "payment-service" ]]; then
             ENV_VARS="STRIPE_KEY=${{ secrets.STRIPE_KEY }}"
           elif [[ "$SERVICE_NAME" == "notification-service" ]]; then
