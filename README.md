@@ -41,7 +41,7 @@ This project is a cloud-native microservices-based application deployed using **
 
 Each microservice is deployed as a separate **Cloud Run** service using Docker containers. The architecture ensures scalability, resilience, and modular development.
 
-![Architecture Diagram](Resources\Architecture_Diagram.jpg)
+![Architecture Diagram](/Resources/Architecture_Diagram.jpg)
 
 ---
 
