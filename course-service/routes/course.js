@@ -15,7 +15,6 @@ import {
   searchCourse,
 } from "../controllers/course.js";
 import upload from "../middlewares/multer.js";
-// import { fetchUser } from "../utils/fetchUser.js";
 
 const router = express.Router();
 
