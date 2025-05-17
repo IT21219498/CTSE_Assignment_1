@@ -18,11 +18,14 @@ app.use("/", authRouter);
 
 //server config
 const PORT = process.env.PORT || 9001;
-app.listen(PORT, async () => {
-  try {
-    await connect();
-    console.log(`User service is running on port ${PORT}`);
-  } catch (error) {
-    console.log(err);
-  }
-});
+
+connect()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`User service is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect to the database:", err);
+    process.exit(1);
+  });

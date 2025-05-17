@@ -13,8 +13,7 @@ export const login = async (req, res) => {
       .json({ error: `Please enter all the required fields.` });
 
   //check email
-  const emailRegEx =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   //check email
   if (!emailRegEx.test(email))
@@ -62,8 +61,7 @@ export const register = async (req, res) => {
       .status(400)
       .json({ error: `Please enter all the required fields.` });
 
-  const emailRegEx =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   //check email
   if (!emailRegEx.test(email))
