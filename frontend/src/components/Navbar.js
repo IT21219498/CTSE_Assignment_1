@@ -9,7 +9,7 @@ import { API_BASE_URL } from "../config/config";
 //Navbar functional component
 const Navbar = () => {
   // Access toast and user information from respective contexts
-  const { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [course, setCourse] = useState("");
   const [showCourse, setShowCourse] = useState(false);
   const [courses, setCourses] = useState([]);
