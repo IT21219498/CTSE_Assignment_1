@@ -37,7 +37,6 @@ const Home = () => {
           `${COURSE_SERVICE_BASE_URL}/getAllCourses`
         ).then((res) => res.json());
         setCourses(data.courses);
-        // console.log(data);
       } catch (error) {
         console.log(error.message);
       }
@@ -55,17 +54,17 @@ const Home = () => {
 
   return (
     <div>
-      <div className='d-flex justify-content-center'>
-        <h2 className=''>Hello User! Welcome to the EduRookie</h2>
+      <div className="d-flex justify-content-center">
+        <h2 className="">Hello User! Welcome to the EduRookie</h2>
       </div>
       <Dashboard />
-      <div className='d-flex justify-content-start'>
-        <h2 className='ms-3 my-4'>Explore Our Top Courses...</h2>
+      <div className="d-flex justify-content-start">
+        <h2 className="ms-3 my-4">Explore Our Top Courses...</h2>
       </div>
-      <div className='container d-flex justify-content-center'>
-        <div className='row'>
-          {courses.map((course, index) => (
-            <div className='col-md-4 mb-4' key={index}>
+      <div className="container d-flex justify-content-center">
+        <div className="row">
+          {courses.map((course) => (
+            <div className="col-md-4 mb-4" key={course.id}>
               <CourseCard {...course} onclickCourse={onclickCourse} />
             </div>
           ))}
