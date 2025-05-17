@@ -35,7 +35,12 @@ const Footer = () => {
             </a>
           </li>
           <li className="ms-3">
-            <a className="text-body-secondary" href="#">
+            <a
+              className="text-body-secondary"
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <InstagramIcon />
             </a>
           </li>
