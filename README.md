@@ -35,15 +35,13 @@ This project is a cloud-native microservices-based application deployed using **
 | `notification-service` | https://notification-service-965928461642.us-central1.run.app |
 | `frontend`             | https://frontend-965928461642.us-central1.run.app             |
 
-> ⚠️ Replace `***` with your actual GCP project hash or ID.
-
 ---
 
 ## 🧠 Architecture
 
 Each microservice is deployed as a separate **Cloud Run** service using Docker containers. The architecture ensures scalability, resilience, and modular development.
 
-![Architecture Diagram](./architecture-diagram.png)
+![Architecture Diagram](/Resources/Architecture_Diagram.jpg)
 
 ---
 
@@ -86,7 +84,7 @@ Each microservice is deployed as a separate **Cloud Run** service using Docker c
 ## 📊 Reporting
 
 - ✅ SonarCloud Reports: Code smells, bugs, maintainability
-- ✅ Test coverage: (Optional) Generated and uploaded via GitHub Actions
+- ✅ Test coverage: Generated and uploaded via GitHub Actions
 
 ---
 
