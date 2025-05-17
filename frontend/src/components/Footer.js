@@ -25,17 +25,32 @@ const Footer = () => {
 
         <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
           <li className="ms-3">
-            <a className="text-body-secondary" href="#">
+            <a
+              className="text-body-secondary"
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <TwitterIcon />
             </a>
           </li>
           <li className="ms-3">
-            <a className="text-body-secondary" href="#">
+            <a
+              className="text-body-secondary"
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <InstagramIcon />
             </a>
           </li>
           <li className="ms-3">
-            <a className="text-body-secondary" href="#">
+            <a
+              className="text-body-secondary"
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FacebookIcon />
             </a>
           </li>
