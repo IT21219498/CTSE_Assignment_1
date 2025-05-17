@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import TaskAltTwoToneIcon from "@mui/icons-material/TaskAltTwoTone";
 import "./Success.css";
 import AuthContext from "../context/AuthContext";
 import CommonContext from "../context/CommonContext";
@@ -39,19 +38,19 @@ function Success() {
   }, []);
 
   return (
-    <div className='success-container'>
-      <div className='success-content'>
+    <div className="success-container">
+      <div className="success-content">
         <img
-          src='https://cdn.dribbble.com/users/1751799/screenshots/5512482/check02.gif'
-          alt='success'
-          className='success-icon'
+          src="https://cdn.dribbble.com/users/1751799/screenshots/5512482/check02.gif"
+          alt="success"
+          className="success-icon"
         />
-        <h1 className='success-heading'>Thank you for your purchase!</h1>
-        <p className='success-message'>
+        <h1 className="success-heading">Thank you for your purchase!</h1>
+        <p className="success-message">
           Your course purchase was successful. Start learning now!
         </p>
         <button
-          className='btn btn-primary btn-lg success-btn'
+          className="btn btn-primary btn-lg success-btn"
           onClick={() => window.location.replace("/")}
         >
           Go to Home

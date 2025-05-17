@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import ToastContext from './ToastContext';
+import { createContext, useContext, useState } from "react";
+import ToastContext from "./ToastContext";
 
 const CommonContext = createContext();
 
