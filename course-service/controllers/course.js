@@ -195,7 +195,7 @@ export const getCourseByUserId = async (req, res) => {
     const jwtToken = req.headers.authorization;
     console.log("🚀 ~ getCourseByUserId ~ jwtToken:", jwtToken);
 
-    async function fecthUser() {
+    const fetchUser = async () => {
       try {
         const response = await axios.get(
           `${process.env.GATEWAY_URL}user/api/me`,
@@ -207,13 +207,19 @@ export const getCourseByUserId = async (req, res) => {
         );
         return response.data;
       } catch (error) {
-        throw new Error("User cannot be found!");
+        console.error("Error fetching user:", error.message);
+        throw new Error("Failed to fetch user details. Please try again.");
       }
-    }
-    const user = await fecthUser();
+    };
+
+    const user = await fetchUser();
     console.log("🚀 ~ getCourseByUserId ~ user:", user);
+
     const userId = user._id;
     const company = await Company.findOne({ userId: userId });
+    if (!company) {
+      return res.status(404).json({ error: "Company not found" });
+    }
     console.log("🚀 ~ getCourseByUserId ~ company:", company);
 
     const courses = await Course.find({ company: company._id }).select(
@@ -221,6 +227,7 @@ export const getCourseByUserId = async (req, res) => {
     );
     res.status(200).json({ courses });
   } catch (error) {
+    console.error("Error in getCourseByUserId:", error.message);
     res.status(500).json({ error: error.message });
   }
 };
