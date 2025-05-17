@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
-import ToastContext from "../context/ToastContext";
 import Logo from "../assets/Logo2.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
@@ -9,7 +8,7 @@ import { API_BASE_URL } from "../config/config";
 //Navbar functional component
 const Navbar = () => {
   // Access toast and user information from respective contexts
-  const { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [course, setCourse] = useState("");
   const [showCourse, setShowCourse] = useState(false);
   const [courses, setCourses] = useState([]);
