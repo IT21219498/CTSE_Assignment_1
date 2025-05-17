@@ -1,31 +1,30 @@
-import express from "express";
-import cors from "cors";
-import stripe from "stripe";
-import dotenv from "dotenv";
-import { connect } from "./config/db_con.js";
-import morgan from "morgan";
+import express from 'express';
+import cors from 'cors';
+import stripe from 'stripe';
+import dotenv from 'dotenv';
+import morgan from 'morgan';
 
 dotenv.config();
 const app = express();
 app.use(cors());
-app.use(express.static("public"));
+app.use(express.static('public'));
 app.use(express.json());
-app.use(morgan("tiny"));
+app.use(morgan('tiny'));
 
 const stripeClient = stripe(process.env.STRIPE_KEY);
 
-app.post("/checkout", async (req, res) => {
+app.post('/checkout', async (req, res) => {
   console.log(req.body);
 
   const courses = req.body.courses;
 
   if (!courses) {
-    return res.status(400).json({ error: "No courses found" });
+    return res.status(400).json({ error: 'No courses found' });
   }
 
   //check if the stripeProductId is valid
   if (courses.some((course) => !course.stripeProductId)) {
-    return res.status(400).json({ error: "Invalid course" });
+    return res.status(400).json({ error: 'Invalid course' });
   }
 
   const courseItems = courses.map((courses) => ({
@@ -35,19 +34,19 @@ app.post("/checkout", async (req, res) => {
 
   const session = await stripeClient.checkout.sessions.create({
     line_items: courseItems,
-    mode: "payment",
-    success_url: "https://frontend-965928461642.us-central1.run.app/success",
-    cancel_url: "https://frontend-965928461642.us-central1.run.app/cancel",
+    mode: 'payment',
+    success_url: 'https://frontend-965928461642.us-central1.run.app/success',
+    cancel_url: 'https://frontend-965928461642.us-central1.run.app/cancel',
   });
 
   res.send(JSON.stringify({ url: session.url }));
 });
 
-app.post("/create-product", async (req, res) => {
+app.post('/create-product', async (req, res) => {
   const { name, price, images } = req.body;
 
   if (!name || !price || !images) {
-    return res.status(400).json({ error: "Please provide all fields" });
+    return res.status(400).json({ error: 'Please provide all fields' });
   }
 
   try {
@@ -56,9 +55,9 @@ app.post("/create-product", async (req, res) => {
       images: images,
       default_price_data: {
         unit_amount: price,
-        currency: "lkr",
+        currency: 'lkr',
       },
-      expand: ["default_price"],
+      expand: ['default_price'],
     });
 
     res.status(201).json(product);
@@ -68,8 +67,8 @@ app.post("/create-product", async (req, res) => {
 });
 
 //default route
-app.get("/", (req, res) => {
-  res.send("Welcome to the Payment Service");
+app.get('/', (req, res) => {
+  res.send('Welcome to the Payment Service');
 });
 
 const PORT = process.env.PORT || 9002;
