@@ -67,6 +67,7 @@ const Slide3 = () => {
         </p>
       </div>
       <img
+        alt="Dashboard"
         src={dash3}
         className="ml-auto border rounded p-3"
         style={{ width: "25%", height: "25%" }}
