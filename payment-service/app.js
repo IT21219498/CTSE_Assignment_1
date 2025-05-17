@@ -75,7 +75,6 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 9002;
 app.listen(PORT, async () => {
   try {
-    // await connect();
     console.log(`Payment service is running on port ${PORT}`);
   } catch (err) {
     console.log(err);

@@ -72,7 +72,6 @@ app.post("/send-notification", async (req, res) => {
 const PORT = process.env.PORT || 9003;
 app.listen(PORT, async () => {
   try {
-    // await connect();
     console.log(`Notification service is running on port ${PORT}`);
   } catch (error) {
     console.log(error);
