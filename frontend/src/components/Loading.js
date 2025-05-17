@@ -6,8 +6,8 @@ const Loading = ({ text }) => {
   return (
     <div className="d-flex justify-content-center align-items-center">
       <div>
-        <div className="spinner-border text-primary" role="status"></div>
-        <span className="sr-only">{text}...</span>
+        <div className="spinner-border text-primary"></div>
+        <output className="sr-only">{text}...</output>
       </div>
     </div>
   );
