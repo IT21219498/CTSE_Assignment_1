@@ -230,7 +230,7 @@ const AddContent = () => {
               Questions and Options (Select the correct answer)
             </label>
             {quiz.questions.map((q, questionIndex) => (
-              <div key={questionIndex}>
+              <div key={`question-${questionIndex}-${q.question}`}>
                 <label
                   htmlFor={`question-${questionIndex}`}
                   className="form-label"
@@ -246,10 +246,12 @@ const AddContent = () => {
                   onChange={(e) => handleQuestionChange(e, questionIndex)}
                 />
                 {q.options.map((o, optionIndex) => (
-                  <div key={optionIndex}>
+                  <div
+                    key={`option-${questionIndex}-${optionIndex}-${o.option}`}
+                  >
                     <input
                       type="text"
-                      className="form-control  ms-3 w-75"
+                      className="form-control ms-3 w-75"
                       id={`option-${questionIndex}-${optionIndex}`}
                       placeholder={"Enter option " + (optionIndex + 1)}
                       value={o.option}
