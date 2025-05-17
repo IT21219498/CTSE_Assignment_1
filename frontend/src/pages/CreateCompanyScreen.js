@@ -1,29 +1,27 @@
-import React, { useContext, useState } from "react";
-import { createCompany } from "../api/company";
-import Loading from "../components/Loading";
-import UploadWidget from "../components/UploadWidget";
-import ToastContext from "../context/ToastContext";
+import React, { useContext, useState } from 'react';
+import { createCompany } from '../api/company';
+import Loading from '../components/Loading';
+import UploadWidget from '../components/UploadWidget';
+import ToastContext from '../context/ToastContext';
 
 const CreateCompanyScreen = () => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [logo, setLogo] = useState(null);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const { toast } = useContext(ToastContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!name || !description || !logo || !status || !email || !password) {
-      setError("Please fill in all fields");
+      setError('Please fill in all fields');
       return;
     }
-
-    // setLoading(true);
 
     const result = await createCompany({
       name,
@@ -39,7 +37,7 @@ const CreateCompanyScreen = () => {
       setLoading(false);
       return;
     } else {
-      toast.success("Company created successfully!");
+      toast.success('Company created successfully!');
       handleClear();
     }
 
@@ -47,10 +45,10 @@ const CreateCompanyScreen = () => {
   };
 
   const handleClear = () => {
-    setName("");
-    setDescription("");
+    setName('');
+    setDescription('');
     setLogo(null);
-    setStatus("");
+    setStatus('');
   };
 
   if (loading) {
@@ -102,7 +100,7 @@ const CreateCompanyScreen = () => {
             src={logo}
             alt="Company Logo"
             className="img-fluid w-50 h-50"
-            style={{ maxWidth: "100px" }}
+            style={{ maxWidth: '100px' }}
           />
         )}
 
@@ -153,7 +151,7 @@ const CreateCompanyScreen = () => {
           <button
             type="submit"
             className="btn  "
-            style={{ borderColor: "#0455bf", color: "#0455bf" }}
+            style={{ borderColor: '#0455bf', color: '#0455bf' }}
             onClick={(e) => handleSubmit(e)}
           >
             SUBMIT
