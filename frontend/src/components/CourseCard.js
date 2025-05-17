@@ -1,6 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types"; 
 
-//CourseCard functional component
 const CourseCard = ({
   title,
   image,
@@ -10,8 +10,6 @@ const CourseCard = ({
   onclickCourse,
   _id,
 }) => {
-    // Render the CourseCard component
-
   return (
     <div className='card' onClick={() => onclickCourse(_id)}>
       <img
@@ -22,7 +20,6 @@ const CourseCard = ({
       />
       <div className='card-body'>
         <h5 className='card-title'>{title}</h5>
-        {/* <p className="card-text">Price: {price}</p> */}
         {company && (
           <>
             <div className='d-flex justify-content-start g-2'>
@@ -45,5 +42,17 @@ const CourseCard = ({
   );
 };
 
-// Export the CourseCard component as the default export
+CourseCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  company: PropTypes.shape({
+    name: PropTypes.string,
+    logo: PropTypes.string,
+  }),
+  description: PropTypes.string,
+  onclickCourse: PropTypes.func.isRequired,
+  _id: PropTypes.string.isRequired,
+};
+
 export default CourseCard;
