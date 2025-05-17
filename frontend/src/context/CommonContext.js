@@ -1,32 +1,34 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import ToastContext from "./ToastContext";
 
 const CommonContext = createContext();
 
 export const CommonContextProvider = ({ children }) => {
-  const { toast } = useContext(ToastContext);
-
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
 
+  // Memoize the context value to prevent unnecessary re-renders
+  const contextValue = useMemo(
+    () => ({
+      selectedCourseId,
+      setSelectedCourseId,
+      isEnrolled,
+      setIsEnrolled,
+      selectedCompanyId,
+      setSelectedCompanyId,
+    }),
+    [selectedCourseId, isEnrolled, selectedCompanyId]
+  );
+
   return (
-    <CommonContext.Provider
-      value={{
-        selectedCourseId,
-        setSelectedCourseId,
-        isEnrolled,
-        setIsEnrolled,
-        selectedCompanyId,
-        setSelectedCompanyId,
-      }}
-    >
+    <CommonContext.Provider value={contextValue}>
       {children}
     </CommonContext.Provider>
   );
 };
 
+// Define prop types for the CommonContextProvider component
 CommonContextProvider.propTypes = {
   children: PropTypes.node.isRequired, // Validate that children is a React node and required
 };
