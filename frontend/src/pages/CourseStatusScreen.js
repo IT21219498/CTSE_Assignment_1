@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { COURSE_SERVICE_BASE_URL } from "../config/config";
-import { Card, Col, Row, Form } from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import { COURSE_SERVICE_BASE_URL } from '../config/config';
+import { Card, Col, Row, Form } from 'react-bootstrap';
 
 const CourseStatusScreen = () => {
   const [courses, setCourses] = useState([]);
@@ -8,7 +8,7 @@ const CourseStatusScreen = () => {
     getCourses();
   }, []);
 
-  const statusOptions = ["draft", "published", "unpublished"];
+  const statusOptions = ['draft', 'published', 'unpublished'];
 
   const getCourses = async () => {
     try {
@@ -30,9 +30,9 @@ const CourseStatusScreen = () => {
       const response = await fetch(
         `${COURSE_SERVICE_BASE_URL}/updateCourseStatus`,
         {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ status: newStatus, courseId }),
         }
@@ -53,7 +53,7 @@ const CourseStatusScreen = () => {
           courses.map((course) => (
             <Col xs={12} sm={6} md={4} lg={3} key={course._id}>
               <Card
-                style={{ width: "100%", marginBottom: "20px" }}
+                style={{ width: '100%', marginBottom: '20px' }}
                 // onClick={() => onclickCourse(course._id)}
               >
                 <Card.Img variant="top" src={course.image} />
@@ -67,7 +67,7 @@ const CourseStatusScreen = () => {
                     }
                   >
                     {statusOptions.map((status, index) => (
-                      <option key={index} value={status}>
+                      <option key={`${status}-${index}`} value={status}>
                         {status}
                       </option>
                     ))}
