@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import PropTypes from "prop-types";
 import ToastContext from "./ToastContext";
 
 const CommonContext = createContext();
@@ -24,6 +25,10 @@ export const CommonContextProvider = ({ children }) => {
       {children}
     </CommonContext.Provider>
   );
+};
+
+CommonContextProvider.propTypes = {
+  children: PropTypes.node.isRequired, // Validate that children is a React node and required
 };
 
 export default CommonContext;
