@@ -32,8 +32,6 @@ router.get("/fetchAllDraftCourses", fetchAllDraftCourses);
 router.put("/updateCourseStatus", updateCourseStatus);
 router.get("/search/:title", searchCourse);
 
-// router.get("/test", fetchUser, (req, res) => {
-//   res.status(200).json({ user: req.user });
-// });
+
 
 export default router;
