@@ -44,6 +44,7 @@ const Slide2 = () => {
         </p>
       </div>
       <img
+        alt="Dashboard"
         variant="top"
         src={dash2}
         className="ml-auto border rounded p-3"
