@@ -45,7 +45,12 @@ const Footer = () => {
             </a>
           </li>
           <li className="ms-3">
-            <a className="text-body-secondary" href="#">
+            <a
+              className="text-body-secondary"
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FacebookIcon />
             </a>
           </li>

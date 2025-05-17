@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import PropTypes from "prop-types"; // Import PropTypes
 import Navbar from "./Navbar";
 import AuthContext from "../context/AuthContext";
 import Footer from "./Footer";
@@ -28,5 +29,11 @@ const Layout = ({ children }) => {
     </>
   );
 };
+
+// Define prop types for the Layout component
+Layout.propTypes = {
+  children: PropTypes.node.isRequired, // Validate that children is a React node and required
+};
+
 // Export the Layout component as the default export
 export default Layout;
