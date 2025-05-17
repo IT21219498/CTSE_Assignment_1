@@ -36,7 +36,6 @@ const addNewEnrollment = async (req, res) => {
   }
 
   try {
-    const course = await fetchCourse(courseId);
     const user = await fetchUser();
     console.log("🚀 ~ addNewEnrollment ~ user:", user);
 
