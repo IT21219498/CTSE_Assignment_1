@@ -1,7 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import ToastContext from "./ToastContext";
-import { useLocation, useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
+import { createContext, useContext, useEffect, useState } from 'react';
+import ToastContext from './ToastContext';
 
 const CommonContext = createContext();
 
