@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import UploadWidget from "../components/UploadWidget";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import ToastContext from "../context/ToastContext";
-// import "react-quill/dist/quill.snow.css";
 import { API_BASE_URL } from "../config/config";
 
 const AddContent = () => {
